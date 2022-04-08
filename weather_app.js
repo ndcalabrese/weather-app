@@ -1,50 +1,90 @@
 const inputForm = document.getElementById("zip-input-form");
+const cardContainer = document.getElementById("app-container");
 // Yes, exposed API keys are poor practice
 const apiKey = "1fd90265a1a504e72f9d580f27492cd4";
 
+// Decode UNIX date provided by OpenWeather API for specified location
+function decodeDate (unixDate) {
+    const ms = unixDate * 1000;
+    const longDate = new Date(ms);
+    let dateOptions = {
+        day: "numeric",
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+    }
+    const shortDate = longDate.toLocaleString("en-US", dateOptions);
+    return shortDate;
+}
+
 function renderWeatherData(data) {
     const newWeatherCard = document.createElement("div");
+    const locationDate = decodeDate(data.current.dt);
     // Yes, this looks horrific
-    newWeatherCard.innerHTML(
-        <div class="app-container-border">
-            <div class="app-container-gradient">
-                <div class="app-container-bg">
-                    <div id="location-weather">
-                        <div class="location-navbar">
-                            <div class="location-heading">
-                                    <h2 class="location-name">Location 1</h2>
-                                    <p class="weather-location-date">Friday, April 8, 2022</p>
-                                </div>
-                        </div>
-                        <div class="location-body">
-                            <div class="location-temperature">
-                                <p class="current-temp">15 F</p>
+    newWeatherCard.innerHTML = `
+            <div class="weather-card-container-border">
+                <div class="weather-card-container-gradient">
+                    <div class="weather-card-container-bg">
+                        <div id="location-weather">
+                            <div class="location-navbar">
+                                <div class="location-heading">
+                                        <h2 class="location-name">
+                                            ${data.name}
+                                        </h2>
+                                        <p class="weather-location-date">
+                                            ${locationDate}
+                                        </p>
+                                    </div>
                             </div>
-                            <div class="location-conditions">
-                                <p class="current-condition">
-                                    Cloudy
-                                </p>
-                                <p class="high-low-temp">
-                                    45 F / 6 F
-                                </p>
-                            </div>
-                            <div class="location-forecast">
-                                <div class="todays-forecast">
+                            <div class="location-body">
+                                <div class="location-temperature">
+                                    <p class="current-temp">Currently: ${Math.round(data.current.temp)}&#176;F</p>
                                 </div>
-                                <div class="tomorrows-forecast">
+                                <div class="location-conditions">
+                                    <p class="current-condition">
+                                        ${data.current.weather[0].main}
+                                    </p>
+                                    <p class="high-low-temp">
+                                        High: ${Math.round(data.daily[0].temp.max)} &#176;F 
+                                    </p>
+                                    <p class="high-low-temp">
+                                        Low: ${Math.round(data.daily[0].temp.min)} &#176;F
+                                    </p>
                                 </div>
-                                <div class="2-days-forecast">    
+                                <div class="location-forecast">
+                                    <div class="todays-forecast">
+                                    </div>
+                                    <div class="tomorrows-forecast">
+                                    </div>
+                                    <div class="2-days-forecast">    
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>`)
+            </div>`;
+    newWeatherCard.setAttribute("class", "weather-card-container");
+    cardContainer.appendChild(newWeatherCard);
+}
+
+function fetchDataFromLocation(locationInfo) {
+    const fullWeatherData = fetch(
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${locationInfo.latitude}&lon=${locationInfo.longitude}&units=imperial&exclude=hourly,minutely&appid=${apiKey}`
+        )
+    .then(response => response.json())
+    .catch(error => {
+        console.error("Request failed", error);
+    })
+fullWeatherData.then(data => {
+    data.name = locationInfo.name
+    console.log(data);
+    renderWeatherData(data);
+});
 }
 
 function fetchWeather(zip) {
-    const weatherData = fetch(
+    fetch(
         `http://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${apiKey}`
     )
     .then(response => response.json())
@@ -52,20 +92,12 @@ function fetchWeather(zip) {
         const locationInfo = {
             latitude: geoData.lat,
             longitude: geoData.lon,
+            name: geoData.name
         }
-        return fetch(
-            `https://api.openweathermap.org/data/2.5/onecall?lat=${locationInfo.latitude}&lon=${locationInfo.longitude}&exclude={part}&appid=${apiKey}`
-        )
-    })
-    .then(response => response.json())
-    .catch(error => {
-        console.error("Request failed", error)
-    })
-    weatherData.then(data => {
-        console.log(data);
-        renderWeatherData(data);
+        return fetchDataFromLocation(locationInfo);
     })
 }
+
 // This function executes when the submission form event listener fires
 function showWeather(event) {
 

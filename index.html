@@ -12,6 +12,7 @@
     <title>Weather App</title>
 </head>
 <body>
+    <h1>Weather App</h1>
     <div id="form-container">
         <form id="zip-input-form">
             <input id="text-box" type="number" inputmode="numeric" maxlength="5"  placeholder="5-Digit ZIP code"
@@ -19,45 +20,47 @@
                 if (this.value.length > this.maxLength) {
                     this.value = this.value.slice(0, this.maxLength);
                 }">
-            <button id="add-button" type="submit">Search</button>
+            <button id="search-button" type="submit">Search</button>
         </form>
     </div>
     <div id="app-container">
-        <div class="app-container-border">
-            <div class="app-container-gradient">
-                <div class="app-container-bg">
-                    <div id="location-weather">
-                        <div class="location-navbar">
-                            <div class="location-heading">
-                                <h2 class="location-name">Location 1</h2>
-                                <p class="weather-location-date">Friday, April 8, 2022</p>
-                            </div>
-                        </div>
-                        <div class="location-body">
-                            <div class="location-temperature">
-                                <p class="current-temp">15 F</p>
-                            </div>
-                            <div class="location-conditions">
-                                <p class="current-condition">
-                                    Cloudy
-                                </p>
-                                <p class="high-low-temp">
-                                    45 F / 6 F
-                                </p>
-                            </div>
-                            <div class="location-forecast">
-                                <div class="todays-forecast">
+        <!--<div class="weather-card-container">
+            <div class="weather-card-container-border">
+                <div class="weather-card-container-gradient">
+                    <div class="weather-card-container-bg">
+                        <div id="location-weather">
+                            <div class="location-navbar">
+                                <div class="location-heading">
+                                    <h2 class="location-name">Location 1</h2>
+                                    <p class="weather-location-date">Friday, April 8, 2022</p>
                                 </div>
-                                <div class="tomorrows-forecast">
+                            </div>
+                            <div class="location-body">
+                                <div class="location-temperature">
+                                    <p class="current-temp">15 F</p>
                                 </div>
-                                <div class="2-days-forecast">    
+                                <div class="location-conditions">
+                                    <p class="current-condition">
+                                        Cloudy
+                                    </p>
+                                    <p class="high-low-temp">
+                                        45 F / 6 F
+                                    </p>
+                                </div>
+                                <div class="location-forecast">
+                                    <div class="todays-forecast">
+                                    </div>
+                                    <div class="tomorrows-forecast">
+                                    </div>
+                                    <div class="2-days-forecast">    
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
     <script type="text/javascript" src="weather_app.js" charset="utf-8">
     </script>
