@@ -85,7 +85,7 @@ fullWeatherData.then(data => {
 
 function fetchWeather(zip) {
     fetch(
-        `http://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${apiKey}`
+        `https://api.openweathermap.org/geo/1.0/zip?zip=${zip},US&appid=${apiKey}`
     )
     .then(response => response.json())
     .then(geoData => {
