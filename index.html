@@ -9,14 +9,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nokora:wght@100;300;400;700;900&display=swap" rel="stylesheet">
-    <title>My To-Do List</title>
+    <title>Weather App</title>
 </head>
 <body>
     <div id="form-container">
-            <form id="zip-input-form">
-                <input id="text-box" type="text" value="ZIP code">
-                <button id="add-button" type="submit">Search</button>
-            </form>
+        <form id="zip-input-form">
+            <input id="text-box" type="number" inputmode="numeric" maxlength="5"  placeholder="5-Digit ZIP code"
+            oninput="javascript: 
+                if (this.value.length > this.maxLength) {
+                    this.value = this.value.slice(0, this.maxLength);
+                }">
+            <button id="add-button" type="submit">Search</button>
+        </form>
     </div>
     <div id="app-container">
         <div id="app-container-border">
